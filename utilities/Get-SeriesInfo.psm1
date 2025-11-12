@@ -6,7 +6,7 @@ function Get-SeriesInfo {
     )
 
     switch ($SeriesPrefix) {
-        "W5xx" {
+        "Wxxx" {
             $RepositoryPath = "\\muwo-file1\ST-Data2\masch.abl\W5xx_03"
             $RegexPattern = "^W5\d{2}_\d{6}$"
             $CspFiles = @(
@@ -17,17 +17,27 @@ function Get-SeriesInfo {
                 "ControlUnit\6_SafetyConfiguration.csp"
             )
             $MuConfigFile = "ControlUnit\MU_Config.TcGVL"
-            $OutFileName = "W5xx_machines_v00.xml"
+            $OutFileName = "wxxx_machines.xml"
         }
-        "T30x" {
+        "T300" {
             $RepositoryPath = "\\muwo-file1\ST-Data2\masch.abl\T30x_03"
-            $RegexPattern = "^T30\d{1}_\d{6}$"
+            $RegexPattern = "^T300_\d{6}$"
             $CspFiles = @(
                 "ControlUnit\0_MetaDataProject.csp",
                 "ControlUnit\1_MachineConfiguration.csp"
             )
             $MuConfigFile = "ControlUnit\MU_CONFIG.EXP"
-            $OutFileName = "T30x_machines_v00.xml"
+            $OutFileName = "T300_machines.xml"
+        }
+        "T305" {
+            $RepositoryPath = "\\muwo-file1\ST-Data2\masch.abl\T30x_03"
+            $RegexPattern = "^T305_\d{6}$"
+            $CspFiles = @(
+                "ControlUnit\0_MetaDataProject.csp",
+                "ControlUnit\1_MachineConfiguration.csp"
+            )
+            $MuConfigFile = "ControlUnit\MU_CONFIG.EXP"
+            $OutFileName = "T300_machines.xml"
         }
         "TX6xx" {
             $RepositoryPath = "\\muwo-file1\ST-Data2\masch.abl\TX6xx_03"
