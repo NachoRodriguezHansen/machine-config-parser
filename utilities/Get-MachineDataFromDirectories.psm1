@@ -1,4 +1,4 @@
-Import-Module -Name "$PSScriptRoot\Get-Timestamp.psm1"
+Import-Module -Name ".\utilities\Get-Timestamp.psm1"
 
 function Get-CodeSmithNodes {
     [CmdletBinding()]
@@ -10,7 +10,7 @@ function Get-CodeSmithNodes {
     )
 
     if (-not (Test-Path $FilePath -PathType Leaf)) {
-        Write-Warning "File not found: $FilePath"
+        Write-Host "$(Get-Timestamp) WARNING: File not found: $FilePath" -ForegroundColor Yellow
         return @()
     }
 
@@ -71,7 +71,7 @@ function Get-MachineDataFromDirectories {
         $machine.SetAttribute("TYPE", $type)
         $machine.SetAttribute("SN", $sn)
 
-        # Leer versión software
+        # Read software version
         $muFile = Join-Path $dir.FullName $SeriesInfo.MuConfigFile
         if (Test-Path $muFile) {
             $line = Get-Content $muFile | Where-Object { $_ -match "HMICFGgszProgramVersion" }
@@ -81,7 +81,7 @@ function Get-MachineDataFromDirectories {
             }
         }
 
-        # Procesar CSP files
+        # Process CSP files
         foreach ($csp in $SeriesInfo.CspFiles) {
             $nodes = Get-FileNodes -Path $dir.FullName -Files @($csp)
             foreach ($node in $nodes) {
@@ -93,9 +93,10 @@ function Get-MachineDataFromDirectories {
         $repository.AppendChild($machine) | Out-Null
         $xmlDoc.Save($xmlPath)
         $iterator++
+
+        if ($iterator -gt 10) { break }
     }
 
-    # Guardar XML
     $xmlPath = Join-Path $OutputDirectory $SeriesInfo.OutFileName
     $xmlDoc.Save($xmlPath)
     Write-Host "$(Get-Timestamp) Saved '$xmlPath'."
