@@ -21,3 +21,14 @@ Clone the repository and install dependencies:
 git clone https://github.com/your-repo/machine-config-parser.git
 cd machine-config-parser
 pip install -r requirements.txt
+```
+
+---
+
+## ⚙️ Usage
+
+Before running the script, you may need to allow PowerShell script execution for the current session:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+```
