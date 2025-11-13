@@ -1,4 +1,4 @@
-/outfiles/*
-/Repository_app/*
+/ps/outfiles/*
 /py/outfiles/*
 /py/utilities/__pycache__/*
+/Repository_app/*
