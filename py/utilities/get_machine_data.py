@@ -4,6 +4,7 @@ from pathlib import Path
 from colorama import init, Fore
 from typing import List, Tuple
 from utilities.get_timestamp import get_timestamp
+from utilities.get_series_info import SeriesConfigBase
 
 init(autoreset=True)
 
@@ -37,9 +38,9 @@ def get_file_nodes(base_path: Path, files: List[str], node_name: str = "property
             print(f"{Fore.YELLOW}{get_timestamp()} File '{file}' has no '{node_name}' nodes.")
     return node_list
 
-def get_machine_data_from_directories(found_dirs: List[Path], output_directory: Path, series_info):
+def get_machine_data_from_directories(found_dirs: List[Path], output_directory: Path, series_info: SeriesConfigBase):
     output_directory.mkdir(parents=True, exist_ok=True)
-    xml_path = output_directory / series_info.OutFileName
+    xml_path = output_directory / series_info.out_file_name
 
     root = ET.Element("repository")
 
@@ -50,7 +51,7 @@ def get_machine_data_from_directories(found_dirs: List[Path], output_directory: 
         machine = ET.SubElement(root, "machine", TYPE=type_, SN=sn)
 
         # Read software version
-        mu_file = dir_path / series_info.MuConfigFile
+        mu_file = dir_path / series_info.mu_config_file
         if mu_file.exists():
             for line in mu_file.read_text(encoding="utf-8").splitlines():
                 if "HMICFGgszProgramVersion" in line:
@@ -60,7 +61,7 @@ def get_machine_data_from_directories(found_dirs: List[Path], output_directory: 
                         machine.set("SW_VERSION", sw_version)
 
         # Process CSP files
-        nodes = get_file_nodes(dir_path, series_info.CspFiles)
+        nodes = get_file_nodes(dir_path, series_info.csp_files)
         for name, value in nodes:
             machine.set(name, value)
 
@@ -69,4 +70,4 @@ def get_machine_data_from_directories(found_dirs: List[Path], output_directory: 
         ET.ElementTree(root).write(xml_path, encoding="utf-8", xml_declaration=True)
 
         if (idx > 10):
-            continue
+            break

@@ -1,61 +1,64 @@
-from types import SimpleNamespace
+import sys
+from utilities.get_timestamp import get_timestamp
 from pathlib import Path
+from pathlib import Path
+from typing import List
+from colorama import init, Fore
+init(autoreset=True)
 
-def get_series_info(series_prefix: str) -> SimpleNamespace:
-    """
-    Returns repository path, regex pattern, CSP files, MU config file, and output filename
-    for the given machine series prefix.
-    """
-    if series_prefix == "Wxxx":
-        repository_path = Path(r"\\muwo-file1\ST-Data2\masch.abl\W5xx_03")
-        regex_pattern = r"^W5\d{2}_\d{6}$"
-        csp_files = [
+class SeriesConfigBase:
+    def __init__(self, series: str, repository_path: str, regex_pattern: str,
+                 csp_files: List[str], mu_config_file: str, out_file_name: str):
+        self.series = series
+        self.repository_path = Path(repository_path)
+        self.regex_pattern = regex_pattern
+        self.csp_files = csp_files
+        self.mu_config_file = mu_config_file
+        self.out_file_name = out_file_name
+
+    def __repr__(self):
+        return f"<{self.series} Config @ {self.repository_path}>"
+    
+ALL_SERIES_CONFIGS: List[SeriesConfigBase] = [
+    SeriesConfigBase(
+        "Wxxx",
+        r"\\muwo-file1\ST-Data2\masch.abl\W5xx_03",
+        r"^W5\d{2}_\d{6}$",
+        [
             "ControlUnit\\0_MetaDataProject.csp",
             "ControlUnit\\1_MachineConfiguration.csp",
             "ControlUnit\\2_StationSelection.csp",
             "ControlUnit\\3_StationConfiguration.csp",
             "ControlUnit\\6_SafetyConfiguration.csp",
-        ]
-        mu_config_file = "ControlUnit\\MU_Config.TcGVL"
-        out_file_name = "wxxx_machines.xml"
-
-    elif series_prefix == "T300":
-        repository_path = Path(r"\\muwo-file1\ST-Data2\masch.abl\T30x_03")
-        regex_pattern = r"^T300_\d{6}$"
-        csp_files = [
+        ],
+        "ControlUnit\\MU_Config.TcGVL",
+        "wxxx_machines.xml",
+    ),
+    SeriesConfigBase(
+        "T300",
+        r"\\muwo-file1\ST-Data2\masch.abl\T30x_03",
+        r"^T300_\d{6}$",
+        [
             "ControlUnit\\0_MetaDataProject.csp",
             "ControlUnit\\1_MachineConfiguration.csp",
-        ]
-        mu_config_file = "ControlUnit\\MU_CONFIG.EXP"
-        out_file_name = "T300_machines.xml"
+        ],
+        "ControlUnit\\MU_CONFIG.EXP",
+        "T300_machines.xml",
+    ),
+    SeriesConfigBase(
+        "TX6xx",
+        r"\\muwo-file1\ST-Data2\masch.abl\TX6xx_03",
+        r"^TX6\d{2}_\d{6}$",
+        ["ControlUnit\\1_MachineConfiguration.csp"],
+        "ControlUnit\\MU_Config.TcGVL",
+        "TX6xx_machines_v00.xml",
+    ),
+]
 
-    elif series_prefix == "T305":
-        repository_path = Path(r"\\muwo-file1\ST-Data2\masch.abl\T30x_03")
-        regex_pattern = r"^T305_\d{6}$"
-        csp_files = [
-            "ControlUnit\\0_MetaDataProject.csp",
-            "ControlUnit\\1_MachineConfiguration.csp",
-        ]
-        mu_config_file = "ControlUnit\\MU_CONFIG.EXP"
-        out_file_name = "T300_machines.xml"
+def get_supported_series() -> List[str]:
+    return [cfg.series for cfg in ALL_SERIES_CONFIGS]
 
-    elif series_prefix == "TX6xx":
-        repository_path = Path(r"\\muwo-file1\ST-Data2\masch.abl\TX6xx_03")
-        regex_pattern = r"^TX6\d{2}_\d{6}$"
-        csp_files = ["ControlUnit\\1_MachineConfiguration.csp"]
-        mu_config_file = "ControlUnit\\MU_Config.TcGVL"
-        out_file_name = "TX6xx_machines_v00.xml"
-
-    else:
-        raise ValueError(
-            f"Invalid series prefix '{series_prefix}'. Supported: Wxxx, T300, T305, TX6xx."
-        )
-
-    return SimpleNamespace(
-        SeriesPrefix=series_prefix,
-        RepositoryPath=repository_path,
-        RegexPattern=regex_pattern,
-        CspFiles=csp_files,
-        MuConfigFile=mu_config_file,
-        OutFileName=out_file_name,
-    )
+def get_series_info(series: str) -> SeriesConfigBase:
+    for cfg in ALL_SERIES_CONFIGS:
+        if cfg.series == series:
+            return cfg
