@@ -41,6 +41,7 @@ def get_file_nodes(base_path: Path, files: List[str], node_name: str = "property
 def get_machine_data_from_directories(found_dirs: List[Path], output_directory: Path, series_info: SeriesConfigBase):
     output_directory.mkdir(parents=True, exist_ok=True)
     xml_path = output_directory / series_info.out_file_name
+    xml_path.parent.mkdir(parents=True, exist_ok=True)
 
     root = ET.Element("repository")
 
@@ -69,5 +70,5 @@ def get_machine_data_from_directories(found_dirs: List[Path], output_directory: 
         ET.indent(root, space="  ")
         ET.ElementTree(root).write(xml_path, encoding="utf-8", xml_declaration=True)
 
-        if (idx > 10):
-            break
+        #if (idx > 10):
+        #    break

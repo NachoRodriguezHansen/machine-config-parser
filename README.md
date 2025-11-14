@@ -32,3 +32,7 @@ Before running the script, you may need to allow PowerShell script execution for
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 ```
+
+```powershell
+C:\el\tools\Python\Python39\python.exe -m streamlit run .\app\app.py 
+```

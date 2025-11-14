@@ -32,7 +32,7 @@ ALL_SERIES_CONFIGS: List[SeriesConfigBase] = [
             "ControlUnit\\6_SafetyConfiguration.csp",
         ],
         "ControlUnit\\MU_Config.TcGVL",
-        "wxxx_machines.xml",
+        r"Wxxx\Wxxx_machines.xml",
     ),
     SeriesConfigBase(
         "T300",
@@ -43,7 +43,18 @@ ALL_SERIES_CONFIGS: List[SeriesConfigBase] = [
             "ControlUnit\\1_MachineConfiguration.csp",
         ],
         "ControlUnit\\MU_CONFIG.EXP",
-        "T300_machines.xml",
+        r"T300\T300_machines.xml",
+    ),
+    SeriesConfigBase(
+        "T305",
+        r"\\muwo-file1\ST-Data2\masch.abl\T30x_03",
+        r"^T305_\d{6}$",
+        [
+            "ControlUnit\\0_MetaDataProject.csp",
+            "ControlUnit\\1_MachineConfiguration.csp",
+        ],
+        "ControlUnit\\MU_CONFIG.EXP",
+        r"T305\T305_machines.xml",
     ),
     SeriesConfigBase(
         "TX6xx",
@@ -51,7 +62,7 @@ ALL_SERIES_CONFIGS: List[SeriesConfigBase] = [
         r"^TX6\d{2}_\d{6}$",
         ["ControlUnit\\1_MachineConfiguration.csp"],
         "ControlUnit\\MU_Config.TcGVL",
-        "TX6xx_machines_v00.xml",
+        r"TX6xx\TX6xx_machines.xml",
     ),
 ]
 
