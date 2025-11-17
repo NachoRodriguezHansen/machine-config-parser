@@ -1,14 +1,16 @@
-import sys
-from utilities.get_timestamp import get_timestamp
-from pathlib import Path
 from pathlib import Path
 from typing import List
-from colorama import init, Fore
-init(autoreset=True)
 
 class SeriesConfigBase:
-    def __init__(self, series: str, repository_path: str, regex_pattern: str,
-                 csp_files: List[str], mu_config_file: str, out_file_name: str):
+    def __init__(
+        self,
+        series: str,
+        repository_path: str,
+        regex_pattern: str,
+        csp_files: List[str],
+        mu_config_file: str,
+        out_file_name: str
+    ):
         self.series = series
         self.repository_path = Path(repository_path)
         self.regex_pattern = regex_pattern
@@ -18,7 +20,9 @@ class SeriesConfigBase:
 
     def __repr__(self):
         return f"<{self.series} Config @ {self.repository_path}>"
-    
+
+DEFAULT_OUTFILES_PATH: Path = Path("outfiles")
+
 ALL_SERIES_CONFIGS: List[SeriesConfigBase] = [
     SeriesConfigBase(
         "Wxxx",
