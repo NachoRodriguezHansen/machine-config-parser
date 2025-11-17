@@ -2,64 +2,77 @@ import streamlit as st
 import pandas as pd
 from pathlib import Path
 
-
 class Files:
-
-    def __init__(self, machine):
+    def __init__(self, machine: str):
+        from py.utilities.series_definitions import DEFAULT_OUTFILES_PATH
         self.machine = machine
-        self.folder = Path(__file__).parent.parent / "py" / "outfiles"
-        if not self.folder.exists():
-            raise FileNotFoundError(f"Folder not found: {self.folder}")
-        self.correct_file = None
+        self.base_folder = Path(__file__).parent.parent / "py" / DEFAULT_OUTFILES_PATH
+        self.correct_file: Path | None = None
         self.df = pd.DataFrame()
 
     def find_csv(self):
-        """Find the CSV file matching the machine series."""
-        csv_files = list(self.folder.glob(f"{self.machine}_*.csv"))
-        if not csv_files:
-            st.warning(f"No CSV file found for machine '{self.machine}' in {self.folder}")
-            return
-
-        # Take the first match
-        self.correct_file = csv_files[0]
-
+        try:
+            from py.utilities.series_definitions import get_series_info
+            series_info = get_series_info(self.machine)
+            expected_csv_path = self.base_folder / Path(series_info.out_file_name).with_suffix(".csv")
+            if expected_csv_path.exists():
+                self.correct_file = expected_csv_path
+            else:
+                self.correct_file = None
+        except Exception:
+            self.correct_file = None
+        
     def show_data(self):
-        """Load CSV into a DataFrame and store in session_state."""
-        df_key = f"df_{self.machine}"
+        if self.correct_file is None:
+            self.find_csv()
 
         if self.correct_file is None:
-            st.warning(f"No CSV file selected for machine '{self.machine}'")
+            # Full-page friendly error
+            st.markdown(
+                f"""
+                <div style="
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    height:70vh;
+                    flex-direction:column;
+                    text-align:center;
+                    color:#ff4b4b;
+                ">
+                    <h1 style="font-size:60px;">❌ CSV File Not Found</h1>
+                    <p style="font-size:24px;">Machine: <b>{self.machine}</b></p>
+                    <p style="font-size:20px;">Expected path: <i>{self.base_folder}</i></p>
+                    <p style="font-size:18px;">Please ensure the CSV file is generated and located in the correct folder.</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
             return
 
-        # Load the DataFrame only if not already in session_state
+        df_key = f"df_{self.machine}"
         if df_key not in st.session_state:
-            self.df = pd.read_csv(self.correct_file, sep=',', dtype=str)
+            self.df = pd.read_csv(self.correct_file, sep=",", dtype=str)
             st.session_state[df_key] = self.df
 
         self.df = st.session_state[df_key]
 
+
     def show_filtered_data(self):
-        """Display DataFrame with optional column filtering."""
+        if self.df.empty:
+            st.warning("No data loaded")
+            return
+        
         df_key = f"df_{self.machine}"
         election_key = f"election_{self.machine}"
 
-        if df_key not in st.session_state:
-            st.warning('No data loaded')
-            return
-
-        self.df = st.session_state[df_key]
-
-        # Sidebar to select columns
         st.sidebar.multiselect(
-            'Choose columns',
-            self.df.columns.tolist(),
-            key=election_key
-        )
+                    "Choose columns",
+                    self.df.columns.tolist(),
+                    key=election_key
+                )
 
-        # Get selected columns from session_state
         selected_columns = st.session_state.get(election_key, self.df.columns.tolist())
 
-        # Display the DataFrame with the selected columns
         if selected_columns:
             st.data_editor(self.df[selected_columns], use_container_width=True, hide_index=True)
         else:

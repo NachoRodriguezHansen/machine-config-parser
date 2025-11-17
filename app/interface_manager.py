@@ -1,33 +1,43 @@
 import streamlit as st
 from tabs_manager import Tabs
 from style_manager import AppStyles
+from py.utilities.series_definitions import get_supported_series
+
 
 class Interface:
 
     def __init__(self):
+        # Configure Streamlit page
         st.set_page_config(page_title="Machine config app", layout="wide")
+
+        # Apply custom styles
         styles = AppStyles()
         styles.style_tabs()
         styles.style_buttons()
-        self.machine_w = 'Wxxx'
-        self.machine_t = 'T300'
+
+        # Load supported machine series dynamically
+        # Example: ["W500", "W540", "T300", "T305", ...]
+        self.machines = get_supported_series()
 
     def sidebar_configuration(self):
-        st.sidebar.title('Machine Type:')
+        st.sidebar.title("Machine Type:")
 
-        col1, col2 = st.sidebar.columns(2)
-        with col1:
-            self.w5xx_button = st.button('W5xx')
-        with col2:
-            self.t30x_button = st.button('T30x')
+        # Create buttons dynamically based on the available series
+        for series in self.machines:
+            # Display a button for each series
+            if st.sidebar.button(series):
+                # Save selected machine in Streamlit session state
+                st.session_state.machine_type = series
 
-        if self.w5xx_button:
-            st.session_state.machine_type = self.machine_w
-        elif self.t30x_button:
-            st.session_state.machine_type = self.machine_t
+        # Optional: show what is selected
+        if "machine_type" in st.session_state:
+            st.sidebar.markdown(f"**Selected:** {st.session_state.machine_type}")
 
     def show_buttons(self):
-        if  'machine_type' in st.session_state:
+        # Only show tabs if a machine type has been selected
+        if "machine_type" in st.session_state:
             selected_machine = st.session_state.machine_type
+
+            # Create tabs for the selected machine
             w_tabs = Tabs(selected_machine)
             w_tabs.create_tabs()
