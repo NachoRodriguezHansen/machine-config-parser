@@ -2,6 +2,8 @@
 headless = false
 port = 8501
 enableXsrfProtection = true  # Keep it for security
+fileWatcherType = "auto"
+runOnSave = true
 
 [logger]
 level = "error"              # Only show errors
