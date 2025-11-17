@@ -1,5 +1,11 @@
-/ps/outfiles/*
-/py/outfiles/*
-/py/utilities/__pycache__/*
+# app
 /app/__pycache__/*
 /app/.idea/*
+
+# py
+/py/__pycache__/*
+/py/outfiles/*
+/py/utilities/__pycache__/*
+
+# ps
+/ps/outfiles/*
