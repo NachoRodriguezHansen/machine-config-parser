@@ -3,7 +3,7 @@ from pathlib import Path
 from colorama import init, Fore
 from utilities.get_timestamp import get_timestamp
 from utilities.find_directories import find_directories
-from py.utilities.series_definitions import get_series_info, get_supported_series, DEFAULT_OUTFILES_PATH
+from utilities.series_definitions import get_series_info, get_supported_series, DEFAULT_OUTFILES_PATH
 from utilities.get_machine_data import get_machine_data_from_directories
 from utilities.convert_xml import convert_xml_to_csv, convert_xml_to_json
 

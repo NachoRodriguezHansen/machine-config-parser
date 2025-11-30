@@ -1,9 +1,7 @@
-from interface_manager import Interface
+from main_page import MainPage
 
 def main():
-    interface = Interface()
-    interface.sidebar_configuration()
-    interface.show_buttons()
+    MainPage()
 
 if __name__ == "__main__":
     main()

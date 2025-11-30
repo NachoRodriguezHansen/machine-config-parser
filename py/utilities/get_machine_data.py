@@ -4,7 +4,7 @@ from pathlib import Path
 from colorama import init, Fore
 from typing import List, Tuple
 from utilities.get_timestamp import get_timestamp
-from py.utilities.series_definitions import SeriesConfigBase
+from utilities.series_definitions import SeriesConfigBase
 
 init(autoreset=True)
 

@@ -1,3 +1,6 @@
+#global
+/outfiles
+
 # app
 /app/__pycache__/*
 /app/.idea/*

@@ -2,7 +2,7 @@ import streamlit as st
 from files_manager import Files
 
 
-class Content:
+class Data:
     def __init__(self, machine: str):
         self.machine = machine
         self.file_handler = Files(machine)
@@ -29,3 +29,8 @@ class Content:
 
             # Placeholder for future functionality
             st.info("Plotting features will be added here soon.")
+
+
+class Plots:
+    def __init__(self, machine: str):
+        self.machine = machine
