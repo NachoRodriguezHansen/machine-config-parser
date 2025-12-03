@@ -1,11 +1,11 @@
 import argparse
 from pathlib import Path
 from colorama import init, Fore
-from utilities.get_timestamp import get_timestamp
-from utilities.find_directories import find_directories
-from utilities.series_definitions import get_series_info, get_supported_series, DEFAULT_OUTFILES_PATH
-from utilities.get_machine_data import get_machine_data_from_directories
-from utilities.convert_xml import convert_xml_to_csv, convert_xml_to_json
+from core.utils.timestamp import get_timestamp
+from utils.find_directories import find_directories
+from core.utils.definitions import get_series_info, get_supported_series, DEFAULT_OUTFILES_PATH
+from core.utils.machine_data import get_machine_data_from_directories
+from utils.convert_xml import convert_xml_to_csv, convert_xml_to_json
 
 init(autoreset=True)
 
@@ -41,7 +41,7 @@ def main():
         print(f"{Fore.YELLOW}{get_timestamp()} No export format selected. Only XML will be generated.")
 
     # Create output directory
-    out_dir = Path(__file__).parent.parent / DEFAULT_OUTFILES_PATH
+    out_dir = Path(__file__).parent / DEFAULT_OUTFILES_PATH
     out_dir.mkdir(parents=True, exist_ok=True)
 
     for series in args.series:

@@ -4,15 +4,15 @@ from pathlib import Path
 
 class Files:
     def __init__(self, machine: str):
-        from py.utilities.series_definitions import DEFAULT_OUTFILES_PATH
+        from core.utils.definitions import DEFAULT_OUTFILES_PATH
         self.machine = machine
-        self.base_folder = Path(__file__).parent.parent / "py" / DEFAULT_OUTFILES_PATH
+        self.base_folder = Path(__file__).parent / DEFAULT_OUTFILES_PATH
         self.correct_file: Path | None = None
         self.df = pd.DataFrame()
 
     def find_csv(self):
         try:
-            from py.utilities.series_definitions import get_series_info
+            from core.utils.definitions import get_series_info
             series_info = get_series_info(self.machine)
             expected_csv_path = self.base_folder / Path(series_info.out_file_name).with_suffix(".csv")
             if expected_csv_path.exists():

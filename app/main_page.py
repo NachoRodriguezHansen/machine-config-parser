@@ -4,7 +4,7 @@ from pathlib import Path
 import streamlit as st
 from tabs_manager import Content
 from style_manager import AppStyles
-from py.utilities.series_definitions import get_supported_series
+from core.utils.definitions import get_supported_series
 
 
 class MainPage:
@@ -23,9 +23,6 @@ class MainPage:
         with st.sidebar.expander("🛠️ Actions", expanded=False):
             if st.button("Run Machine Parser"):
                 self.run_script_live()
-
-
-
 
         if "machine_type" in st.session_state:
             selected_machine = st.session_state.machine_type

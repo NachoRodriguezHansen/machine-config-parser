@@ -21,7 +21,7 @@ class SeriesConfigBase:
     def __repr__(self):
         return f"<{self.series} Config @ {self.repository_path}>"
 
-DEFAULT_OUTFILES_PATH: Path = Path("outfiles")
+DEFAULT_OUTFILES_PATH: Path = Path("output")
 
 ALL_SERIES_CONFIGS: List[SeriesConfigBase] = [
     SeriesConfigBase(

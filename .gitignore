@@ -1,14 +1,10 @@
 #global
-/outfiles
+/output
 
 # app
 /app/__pycache__/*
 /app/.idea/*
 
 # py
-/py/__pycache__/*
-/py/outfiles/*
-/py/utilities/__pycache__/*
-
-# ps
-/ps/outfiles/*
+/core/__pycache__/*
+/core/utils/__pycache__/*
