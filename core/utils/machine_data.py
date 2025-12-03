@@ -3,8 +3,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from colorama import init, Fore
 from typing import List, Tuple
-from core.utils.timestamp import get_timestamp
-from core.utils.definitions import SeriesConfigBase
+from utils.timestamp import get_timestamp
+from utils.definitions import SeriesConfigBase
 
 init(autoreset=True)
 

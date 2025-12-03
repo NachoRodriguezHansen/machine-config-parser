@@ -1,1 +1,1 @@
-# Root package for parsing utilities
+# Makes 'directory' a Python package

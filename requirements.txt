@@ -1,5 +1,2 @@
-matplotlib==3.7.1
-matplotlib-inline==0.1.6
-pandas==2.0.1
-seaborn==0.12.2
-streamlit==1.42.1
+streamlit==1.51.0
+pandas==2.2.3

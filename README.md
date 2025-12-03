@@ -14,25 +14,26 @@
 ---
 
 ## 📦 Installation
-
+Optional:
+```bash
+C:\el\tools\Python\Python313\python.exe -m pip install --upgrade pip
+```
 Clone the repository and install dependencies:
 
 ```bash
 git clone https://github.com/your-repo/machine-config-parser.git
 cd machine-config-parser
-pip install -r requirements.txt
+C:\el\tools\Python\Python313\python.exe -m pip install -r requirements.txt
 ```
 
 ---
 
-## ⚙️ Usage
-
-Before running the script, you may need to allow PowerShell script execution for the current session:
-
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+## ⚙️ Parser usage
+```bash
+&C:\el\tools\Python\Python313\python.exe .\core\machine_config_parser.py --series Wxxx T300 T305 --csv
 ```
 
-```powershell
-C:\el\tools\Python\Python39\python.exe -m streamlit run .\app\app.py 
+## ⚙️ App usage
+```bash
+&C:\el\tools\Python\Python313\python.exe -m streamlit run .\app\app.py 
 ```
