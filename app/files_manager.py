@@ -6,7 +6,7 @@ class Files:
     def __init__(self, machine: str):
         from core.utils.definitions import DEFAULT_OUTFILES_PATH
         self.machine = machine
-        self.base_folder = Path(__file__).parent / DEFAULT_OUTFILES_PATH
+        self.base_folder = Path(__file__).parent.parent / DEFAULT_OUTFILES_PATH
         self.correct_file: Path | None = None
         self.df = pd.DataFrame()
 
