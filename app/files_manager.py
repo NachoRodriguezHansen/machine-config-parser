@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Files:
     def __init__(self, machine: str):
@@ -19,7 +22,8 @@ class Files:
                 self.correct_file = expected_csv_path
             else:
                 self.correct_file = None
-        except Exception:
+        except Exception as exc:
+            logger.debug("find_csv error for %s: %s", self.machine, exc)
             self.correct_file = None
         
     def show_data(self):
@@ -51,8 +55,14 @@ class Files:
 
         df_key = f"df_{self.machine}"
         if df_key not in st.session_state:
-            self.df = pd.read_csv(self.correct_file, sep=",", dtype=str)
-            st.session_state[df_key] = self.df
+            try:
+                self.df = pd.read_csv(self.correct_file, sep=",", dtype=str)
+                st.session_state[df_key] = self.df
+            except Exception as exc:
+                logger.exception("Error reading CSV %s: %s", self.correct_file, exc)
+                st.error(f"Error cargando CSV: {exc}")
+                self.df = pd.DataFrame()
+                st.session_state[df_key] = self.df
 
         self.df = st.session_state[df_key]
 
