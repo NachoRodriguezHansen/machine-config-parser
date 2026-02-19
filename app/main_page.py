@@ -5,6 +5,9 @@ import streamlit as st
 from tabs_manager import Content
 from style_manager import AppStyles
 from core.utils.definitions import get_supported_series
+from core.utils.logger import configure_logger, log_error, log_warning
+
+logger = configure_logger(__name__)
 
 
 class MainPage:
@@ -43,11 +46,15 @@ class MainPage:
 
         selected_machine = st.session_state.get("machine_type", "")
         if not selected_machine:
-            st.error("No machine type selected.")
+            msg = "No machine type selected."
+            log_warning(logger, msg)
+            st.error(msg)
             return
 
         if not script_path.exists():
-            st.error(f"Script not found: {script_path}")
+            msg = f"Script not found: {script_path}"
+            log_error(logger, msg)
+            st.error(msg)
             return
 
         st.markdown("### 🖥️ Live Script Output")
@@ -85,4 +92,6 @@ class MainPage:
             process.wait()
 
         except Exception as e:
-            st.error(f"Error running script: {e}")
+            error_msg = f"Error running script: {e}"
+            log_error(logger, error_msg)
+            st.error(error_msg)

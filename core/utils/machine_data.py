@@ -1,18 +1,17 @@
 import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from colorama import init, Fore
 from typing import List, Tuple
-from utils.timestamp import get_timestamp
 from utils.definitions import SeriesConfigBase
+from utils.logger import configure_logger, log_info, log_warning, log_error
 
-init(autoreset=True)
+logger = configure_logger(__name__)
 
 CS_NAMESPACE = {"cs": "http://www.codesmithtools.com/schema/csp.xsd"}
 
 def get_codesmith_nodes(file_path: Path, node_name: str = "property") -> List[ET.Element]:
     if not file_path.is_file():
-        print(f"{get_timestamp()} WARNING: File not found: {file_path}")
+        log_warning(logger, f"File not found: {file_path}")
         return []
 
     try:
@@ -21,7 +20,7 @@ def get_codesmith_nodes(file_path: Path, node_name: str = "property") -> List[ET
         nodes = root.findall(f".//cs:{node_name}", CS_NAMESPACE)
         return nodes
     except ET.ParseError as e:
-        print(f"{get_timestamp()} ERROR: Failed to parse {file_path}: {e}")
+        log_error(logger, f"Failed to parse {file_path}: {e}")
         return []
 
 def get_file_nodes(base_path: Path, files: List[str], node_name: str = "property") -> List[Tuple[str, str]]:
@@ -35,7 +34,7 @@ def get_file_nodes(base_path: Path, files: List[str], node_name: str = "property
                 value = node.text or ""
                 node_list.append((name, value))
         else:
-            print(f"{Fore.YELLOW}{get_timestamp()} File '{file}' has no '{node_name}' nodes.")
+            log_warning(logger, f"File '{file}' has no '{node_name}' nodes.")
     return node_list
 
 def get_machine_data_from_directories(found_dirs: List[Path], output_directory: Path, series_info: SeriesConfigBase):
@@ -46,7 +45,7 @@ def get_machine_data_from_directories(found_dirs: List[Path], output_directory: 
     root = ET.Element("repository")
 
     for idx, dir_path in enumerate(found_dirs, start=1):
-        print(f"{get_timestamp()} Copying properties from {dir_path.name} [{idx}/{len(found_dirs)}]")
+        log_info(logger, f"Copying properties from {dir_path.name} [{idx}/{len(found_dirs)}]")
 
         type_, sn = dir_path.name.split("_")
         machine = ET.SubElement(root, "machine", TYPE=type_, SN=sn)
